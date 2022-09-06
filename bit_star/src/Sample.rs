@@ -1,6 +1,5 @@
 // This function is taking care of sampling
 use rand::{thread_rng, Rng};
-use std::collections::HashMap;
 use crate::Data;
 
 pub fn Sample( batch_size: u64 , mut x_samples: Data::Samples)->Data::Samples
