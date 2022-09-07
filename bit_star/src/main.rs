@@ -70,34 +70,15 @@ fn main() -> std::io::Result<()>{
             x_samples = Sample::Sample(50, 420.0, x_samples, &Environment);
             println!("{:#?}", x_samples);
             println!("{}", x_samples.samples.len());
-            
-            
 
         }// Q_len == 0 and Qv_len == 0 
 
         
     }
 
-    // EXAMPLE USAGE
-    //let mut source_state = Data::State{
-    //    id: 2,
-    //    x: 6.9,
-    //    y: 42.0,
-    //};
-    //let mut target_state = Data::State{
-    //    id: 3,
-    //    x: 1006.9,
-    //    y: 10042.0,
-    //};
-    //let mut EdgeToAdd =  Data::Edge{
-    //    id: 1,
-    //    source_state: source_state,
-    //    target_state: target_state,
-    //};
-    //let score: f64 = 69.69;
-    //
-    //Qe.push(EdgeToAdd, Data::float_to_triplet(score));
-    //println!("Qe = {:#?}", Qe);
-    file.sync_all()?;
+    // Checking the euclidean function for fun
+    let d  = Collision::euclidean_distance(1.0, 0.0, 0.0, 1.0);
+    println!("d == {}", death);
+    // File writing stuff
     Ok(())
 } // END MAIN
