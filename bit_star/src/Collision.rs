@@ -21,3 +21,10 @@ pub fn check_idx_in_collision(x_idx: u64, y_idx: u64, obs_map: &Vec<Vec<u8>> ) -
     }
     return returnval;
 }
+
+pub fn euclidean_distance(x1: f64, y1: f64, x2: f64, y2: f64) -> f64 {
+    // Not yet implemented
+    // i wish i started using this programming language back then, 
+    // but idk if i had the skills/courage 
+    return x1;
+}

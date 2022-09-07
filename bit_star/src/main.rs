@@ -1,13 +1,26 @@
+//          BIT* in Rust
+//          Thomas Fuller 2022
+// imports for algorithms
 use std::collections::HashMap;
 use priority_queue::PriorityQueue;
 use minimal_lexical::Float;
+
+// imports for outputting results
+use std::fs::File;
+use std::io::prelude::*;
+use json;
+
 mod Prune;
 mod Sample;
 mod Data;
 mod readWorld;
 mod Collision;
 
-fn main() {
+fn main() -> std::io::Result<()>{
+    // File writing
+    let mut file = File::create("output.txt")?;
+    file.write_all(b"Hello, World!")?;
+    // Algorithm Setup
     let mut num_samples:u64 = 0;
     let mut x_samples =  Data::Samples{
         num_samples: num_samples,
@@ -53,6 +66,7 @@ fn main() {
             // A1.5, PRUNE
             Prune::Prune();
             // READ this value from a configuration file someday
+            // The 420.0 here is the cost
             x_samples = Sample::Sample(50, 420.0, x_samples, &Environment);
             println!("{:#?}", x_samples);
             println!("{}", x_samples.samples.len());
@@ -84,5 +98,6 @@ fn main() {
     //
     //Qe.push(EdgeToAdd, Data::float_to_triplet(score));
     //println!("Qe = {:#?}", Qe);
-
-}
+    file.sync_all()?;
+    Ok(())
+} // END MAIN

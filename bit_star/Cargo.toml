@@ -8,5 +8,5 @@ edition = "2021"
 [dependencies]
 rand = "0.8.5"
 priority-queue = "1.2.3"
-#priq = "0.2.0"
 minimal-lexical = "0.2.1"
+json = "0.12.4"
