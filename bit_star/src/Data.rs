@@ -74,14 +74,6 @@ impl Eq for Edge{
 }
 
 #[derive(Debug)]
-pub struct Triplet{
-    pub sign: u8,
-    pub exponent: i32, 
-    pub mantissa: u64,
-}
-
-
-#[derive(Debug)]
 pub struct Environment {
     pub x_max: i32,
     pub y_max: i32,

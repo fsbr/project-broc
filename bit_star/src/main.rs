@@ -65,20 +65,22 @@ fn main() -> std::io::Result<()>{
         if Qe_len == 0 && Qv_len == 0 {
             // A1.5, PRUNE
             Prune::Prune();
-            // READ this value from a configuration file someday
-            // The 420.0 here is the cost
+
+            // The 420.0 here is the cost (read from a configuration file someday)
             x_samples = Sample::Sample(50, 420.0, x_samples, &Environment);
             println!("{:#?}", x_samples);
             println!("{}", x_samples.samples.len());
-
         }// Q_len == 0 and Qv_len == 0 
-
         
     }
 
     // Checking the euclidean function for fun
     let d  = Collision::euclidean_distance(1.0, 0.0, 0.0, 1.0);
-    println!("d == {}", death);
+    println!("d == {}", d);
+
     // File writing stuff
+    for (k,v) in &x_samples.samples{
+        write!(file, "{}, {},{}, \n", v.id, v.x, v.y);
+    }
     Ok(())
 } // END MAIN
