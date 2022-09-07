@@ -23,6 +23,7 @@ impl Eq for State{
 }
 
 // this is running but I'm not actually sure what it's doing
+// What I HOPE is happening is that the thing is hashed by the id number lmfao
 impl Hash for State{
     fn hash<H: Hasher>(&self, item: &mut H) {
         self.id.hash(item);

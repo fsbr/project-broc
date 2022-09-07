@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use priority_queue::PriorityQueue;
 use minimal_lexical::Float;
+mod Prune;
 mod Sample;
 mod Data;
 mod readWorld;
@@ -49,8 +50,12 @@ fn main() {
         println!("Qe len = {}, Qv len = {}", Qe_len, Qv_len);
         if Qe_len == 0 && Qv_len == 0 {
             // A1.5, PRUNE
-
-            // 
+            Prune::Prune();
+            // READ this value from a configuration file someday
+            x_samples = Sample::Sample(50, 420.0, x_samples);
+            println!("{:#?}", x_samples);
+            println!("{}", x_samples.samples.len());
+            
 
         }// Q_len == 0 and Qv_len == 0 
 
@@ -77,32 +82,5 @@ fn main() {
     //
     //Qe.push(EdgeToAdd, Data::float_to_triplet(score));
     //println!("Qe = {:#?}", Qe);
-    
-
-    // I'm going to try a lexicographical ordering fo the sign, mantissa and exponent
-    // SIGN EXPONENT MANTISSA for 
-    //let test_number: f64 = 31.5;
-    //let mantissa: u64 = test_number.mantissa();
-    //let exponent: i32 = test_number.exponent();
-    //let is_sign_positive = test_number.is_sign_positive() as u8;
-    //println!("mantissa {}", mantissa );
-    //println!("exponent {}", exponent );
-    //println!("is sign positive {}", is_sign_positive);
-    //println!("exponent {}", 3.0 < 4.12);
-    ////let triplet = Data::Triplet{
-    ////    sign: is_sign_positive,
-    ////    exponent: exponent,
-    ////    mantissa: mantissa,
-    ////};
-    //let triplet = (is_sign_positive, exponent, mantissa);
-    //let output = Data::float_to_triplet(31.49999);
-    //println!("triplet {:#?}", triplet);
-    //let t1 = vec!([8, 10, 10]);
-    //let t2 = vec!([8, 10, 12]);
-    ////println!("t1 > t2? {}", t1>t2);
-    //println!("Data::float_to_triplet = {:#?}", output);
-    //println!("f2t[0] {}", output.0);
-    //println!("Triplet > Output? = {}", triplet> output);
-    
 
 }
