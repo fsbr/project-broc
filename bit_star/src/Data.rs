@@ -1,4 +1,6 @@
 use std::collections::HashMap;
+use std::hash::{Hash, Hasher};
+use minimal_lexical::Float;
 
 // Keep nodes of the motion tree, and states separate
 // Like a node in the motion tree should be a state plus some added info like fHat, gHat etc
@@ -7,6 +9,24 @@ pub struct State {
     pub id: u64,
     pub x: f64,
     pub y: f64,
+}
+impl PartialEq for State{
+    fn eq(&self, other: &State) -> bool {
+        self.id == other.id &&
+        self.x == other.x &&
+        self.y == other.y
+    }
+
+}
+impl Eq for State{
+
+}
+
+// this is running but I'm not actually sure what it's doing
+impl Hash for State{
+    fn hash<H: Hasher>(&self, item: &mut H) {
+        self.id.hash(item);
+    }
 }
 
 #[derive(Debug)]
@@ -25,14 +45,14 @@ impl Default for Samples{
 }
 
 // This is the thing that we will actually push into the V, E 
-#[derive(Debug)]
+#[derive(Eq, PartialEq, Hash, Debug)]
 pub struct Node {
     pub id: u64,
     pub state: State,
     parent: Box<Node>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Hash)]
 pub struct Edge{
     pub id: u64,
     pub source_state: State,
@@ -68,4 +88,19 @@ pub struct Environment {
 }
 
 
+// Stuff for the Priority Queue
+// Goals for organization: have some generic mathematical utilities crate stored away for future use
+pub fn float_to_triplet(input: f64)->( u8, i32, u64 ){
+    // this takes an f64 and outputs the sign, exponent, mantissa triplet 
+    // needed for comparison in edge queues
+    let sign: u8 = input.is_sign_positive() as u8;
+    let exponent: i32 = input.exponent();
+    let mantissa: u64 = input.mantissa();
+    let output: (u8, i32, u64) = (sign, exponent, mantissa);
+    return output;
+}
+pub fn triplet_to_float(input: (u8,i32,u64) )-> f64{
+    let output: f64 = 3.141592;
+    return output;
 
+}
