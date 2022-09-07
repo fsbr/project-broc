@@ -4,6 +4,7 @@ use minimal_lexical::Float;
 
 // Keep nodes of the motion tree, and states separate
 // Like a node in the motion tree should be a state plus some added info like fHat, gHat etc
+// I am not sure if I actually want to derive copy or clone for this one
 #[derive(Copy, Clone, Debug)]
 pub struct State {
     pub id: u64,
@@ -50,6 +51,7 @@ impl Default for Samples{
 pub struct Node {
     pub id: u64,
     pub state: State,
+    // gT, fHat, etc.
     parent: Box<Node>,
 }
 
@@ -101,6 +103,7 @@ pub fn float_to_triplet(input: f64)->( u8, i32, u64 ){
     return output;
 }
 pub fn triplet_to_float(input: (u8,i32,u64) )-> f64{
+    println!("This function is not implemented yet");
     let output: f64 = 3.141592;
     return output;
 

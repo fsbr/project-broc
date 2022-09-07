@@ -5,6 +5,7 @@ mod Prune;
 mod Sample;
 mod Data;
 mod readWorld;
+mod Collision;
 
 fn main() {
     let mut num_samples:u64 = 0;
@@ -52,9 +53,10 @@ fn main() {
             // A1.5, PRUNE
             Prune::Prune();
             // READ this value from a configuration file someday
-            x_samples = Sample::Sample(50, 420.0, x_samples);
+            x_samples = Sample::Sample(50, 420.0, x_samples, &Environment);
             println!("{:#?}", x_samples);
             println!("{}", x_samples.samples.len());
+            
             
 
         }// Q_len == 0 and Qv_len == 0 
