@@ -40,7 +40,6 @@ pub fn readWorld()->Data::Environment {
             x_max = content_vec[idx].parse().unwrap();
         } else if idx == 1 {
             y_max = content_vec[idx].parse().unwrap();
-            println!(" 2+ymax == {:#?}", 2+(y_max as usize));
         } else if idx > 1 && idx < 2+(y_max as usize){
             //println!("{:#?}", content_vec[idx]);
 

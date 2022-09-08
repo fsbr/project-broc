@@ -21,16 +21,25 @@ fn main() -> std::io::Result<()>{
     // File writing
     let mut file = File::create("samples.txt")?;
 
+
+    // Reading in the environment
+    let Environment = readWorld::readWorld();
+
     // Algorithm Setup
     let inf: f64 = f64::INFINITY;
 
+    // Book-keeping for the number of samples, nodes and edges we create
     let mut num_samples:u64 = 0;
+    let mut num_nodes:u64 = 0;
+    let mut num_edges: u64 = 0;
+
     let mut x_samples =  Data::Samples{
         num_samples: num_samples,
         samples: HashMap::new(),
     };
+    num_samples+=1;
 
-    let Environment = readWorld::readWorld();
+
 
     println!("BIT* Implementation");
 
@@ -38,11 +47,19 @@ fn main() -> std::io::Result<()>{
     let x_start = Environment.start;
     let x_goal = Environment.goal;
         
-    // TODO: Update this step to use NODE instead of state, the difference is important
-    let mut V: HashMap<u64, Data::State> = HashMap::new();
+    let mut V: HashMap<u64, Data::Node> = HashMap::new();
+    let mut start_node = Data::Node{
+        id: 0,
+        state: x_start,
+        gT: 0.0,
+        hHat: Collision::euclidean_distance(x_start.x, x_start.y, x_goal.x, x_goal.y),
+        gHat: Collision::euclidean_distance(x_start.x, x_start.y, x_start.x, x_start.y),
+        parent: None,
+    };
+    num_nodes+=1;
 
     // Need a function in here that computes the gHat, fHat, all that stuff (tomorrow)
-    V.insert(x_start.id, x_start);
+    V.insert(start_node.id, start_node);
     println!("V = {:#?}", V); 
 
     // A1.1 E <- emptyset
@@ -82,7 +99,6 @@ fn main() -> std::io::Result<()>{
             // A1.8 Qv <- V
             
 
-
         }// Q_len == 0 and Qv_len == 0 
         
     }
@@ -96,4 +112,5 @@ fn main() -> std::io::Result<()>{
         write!(file, "{}, {},{}, \n", v.id, v.x, v.y);
     }
     Ok(())
+
 } // END MAIN

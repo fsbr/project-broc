@@ -53,8 +53,12 @@ pub struct Node {
     pub state: State,
     // gT, fHat, etc.
     pub gT: f64,
-    parent: Box<Node>,
+    pub gHat: f64,
+    pub hHat: f64,
+    pub parent: Option< Box<Node> >,
 }
+
+// Fundamental `Traits` for Node
 impl PartialEq for Node {
     fn eq(&self, other: &Node) -> bool {
         self.id == other.id
@@ -63,12 +67,13 @@ impl PartialEq for Node {
 impl Eq for Node {
 
 }
-
 impl Hash for Node{
     fn hash<H: Hasher>(&self, item: &mut H) {
         self.id.hash(item);
     }
 }
+
+
 #[derive(Debug, Hash)]
 pub struct Edge{
     pub id: u64,
@@ -112,5 +117,4 @@ pub fn triplet_to_float(input: (u8,i32,u64) )-> f64{
     println!("This function is not implemented yet");
     let output: f64 = 3.141592;
     return output;
-
 }
