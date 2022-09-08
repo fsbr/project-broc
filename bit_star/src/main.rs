@@ -18,8 +18,8 @@ mod Collision;
 
 fn main() -> std::io::Result<()>{
     // File writing
-    let mut file = File::create("output.txt")?;
-    file.write_all(b"Hello, World!")?;
+    let mut file = File::create("samples.txt")?;
+
     // Algorithm Setup
     let mut num_samples:u64 = 0;
     let mut x_samples =  Data::Samples{
@@ -54,7 +54,7 @@ fn main() -> std::io::Result<()>{
 
     let mut loop_counter: u8 = 0; 
     // A1.3
-    while loop_counter < 2 {
+    while loop_counter < 200 {
         println!("JUST SEE THIS ONCE"); 
         loop_counter+=1;
         
