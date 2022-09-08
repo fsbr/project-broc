@@ -58,15 +58,15 @@ pub struct Node {
 #[derive(Debug, Hash)]
 pub struct Edge{
     pub id: u64,
-    pub source_state: State,
-    pub target_state: State,
+    pub source_node: Node,
+    pub target_node: Node,
 }
 impl PartialEq for Edge{ 
     fn eq(&self, other: &Edge) -> bool {
-        self.source_state.x == other.source_state.x &&
-        self.source_state.y == other.source_state.y &&
-        self.target_state.x == other.target_state.x &&
-        self.target_state.y == other.target_state.y
+        self.source_node.state.x == other.source_node.state.x &&
+        self.source_node.state.y == other.source_node.state.y &&
+        self.target_node.state.x == other.target_node.state.x &&
+        self.target_node.state.y == other.target_node.state.y
     }
 }
 impl Eq for Edge{

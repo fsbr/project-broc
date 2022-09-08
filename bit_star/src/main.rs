@@ -54,7 +54,7 @@ fn main() -> std::io::Result<()>{
 
     let mut loop_counter: u8 = 0; 
     // A1.3
-    while loop_counter < 200 {
+    while loop_counter < 255 {
         println!("JUST SEE THIS ONCE"); 
         loop_counter+=1;
         
@@ -68,8 +68,8 @@ fn main() -> std::io::Result<()>{
 
             // The 420.0 here is the cost (read from a configuration file someday)
             x_samples = Sample::Sample(50, 420.0, x_samples, &Environment);
-            println!("{:#?}", x_samples);
-            println!("{}", x_samples.samples.len());
+            //println!("{:#?}", x_samples);
+            //println!("{}", x_samples.samples.len());
         }// Q_len == 0 and Qv_len == 0 
         
     }
