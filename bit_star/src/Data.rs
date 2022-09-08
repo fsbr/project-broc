@@ -47,14 +47,28 @@ impl Default for Samples{
 }
 
 // This is the thing that we will actually push into the V, E 
-#[derive(Eq, PartialEq, Hash, Debug)]
+#[derive(Debug)]
 pub struct Node {
     pub id: u64,
     pub state: State,
     // gT, fHat, etc.
+    pub gT: f64,
     parent: Box<Node>,
 }
+impl PartialEq for Node {
+    fn eq(&self, other: &Node) -> bool {
+        self.id == other.id
+    }
+}
+impl Eq for Node {
 
+}
+
+impl Hash for Node{
+    fn hash<H: Hasher>(&self, item: &mut H) {
+        self.id.hash(item);
+    }
+}
 #[derive(Debug, Hash)]
 pub struct Edge{
     pub id: u64,

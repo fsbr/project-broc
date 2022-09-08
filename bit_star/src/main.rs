@@ -1,5 +1,6 @@
 //          BIT* in Rust
 //          Thomas Fuller 2022
+
 // imports for algorithms
 use std::collections::HashMap;
 use priority_queue::PriorityQueue;
@@ -21,6 +22,8 @@ fn main() -> std::io::Result<()>{
     let mut file = File::create("samples.txt")?;
 
     // Algorithm Setup
+    let inf: f64 = f64::INFINITY;
+
     let mut num_samples:u64 = 0;
     let mut x_samples =  Data::Samples{
         num_samples: num_samples,
@@ -35,7 +38,10 @@ fn main() -> std::io::Result<()>{
     let x_start = Environment.start;
     let x_goal = Environment.goal;
         
+    // TODO: Update this step to use NODE instead of state, the difference is important
     let mut V: HashMap<u64, Data::State> = HashMap::new();
+
+    // Need a function in here that computes the gHat, fHat, all that stuff (tomorrow)
     V.insert(x_start.id, x_start);
     println!("V = {:#?}", V); 
 
@@ -48,13 +54,12 @@ fn main() -> std::io::Result<()>{
     println!("x_samples = {:#?}", x_samples); 
 
     // Qe <- emptyset
-    
     let mut Qe: PriorityQueue<Data::Edge, (u8, i32, u64)> = PriorityQueue::new();
     let mut Qv: PriorityQueue<Data::Node, (u8, i32, u64)> = PriorityQueue::new();
 
     let mut loop_counter: u8 = 0; 
     // A1.3
-    while loop_counter < 255 {
+    while loop_counter < 2 {
         println!("JUST SEE THIS ONCE"); 
         loop_counter+=1;
         
@@ -66,10 +71,18 @@ fn main() -> std::io::Result<()>{
             // A1.5, PRUNE
             Prune::Prune();
 
-            // The 420.0 here is the cost (read from a configuration file someday)
-            x_samples = Sample::Sample(50, 420.0, x_samples, &Environment);
-            //println!("{:#?}", x_samples);
-            //println!("{}", x_samples.samples.len());
+            // A1.6 x_samples <-+ Sample( m, gT(xgoal) )
+            x_samples = Sample::Sample(50, inf, x_samples, &Environment);
+
+            // A1.7 V_old <- V;
+            let mut V_old = &V;
+            println!("V_old {:#?}", V_old); 
+            println!("V {:#?}", &V); 
+
+            // A1.8 Qv <- V
+            
+
+
         }// Q_len == 0 and Qv_len == 0 
         
     }
