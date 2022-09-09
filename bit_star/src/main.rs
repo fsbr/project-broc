@@ -3,8 +3,9 @@
 
 // imports for algorithms
 use std::collections::HashMap;
-use priority_queue::PriorityQueue;
+use priority_queue::{PriorityQueue, DoublePriorityQueue};
 use minimal_lexical::Float;
+use std::process::exit;
 
 // imports for outputting results
 use std::fs::File;
@@ -12,15 +13,50 @@ use std::io::prelude::*;
 use json;
 
 mod Prune;
+mod ExpandVertex;
 mod Sample;
 mod Data;
 mod readWorld;
 mod Collision;
 
+// TODO: combine BestQueueValueQe and BestQueueValueQv into one function
+fn BestQueueValueQv(queue: &DoublePriorityQueue<&Data::Node, (u8, i32, u64)>) -> (u8,i32,u64) {
+    let mut min_couple = queue.peek_min();
+    
+    println!(" IN BEST QUEUE VALUE Qv {:#?}", min_couple);
+    match min_couple {
+        Some(min_couple) =>{
+            println!("something was there!");
+            println!("{:#?}", min_couple.1);
+            return *min_couple.1;
+        }
+        None => {
+            println!("Nothing found in Queue, so returning maximum values");
+            return (1, i32::MAX, u64::MAX);
+        }
+    }
+}
+
+fn BestQueueValueQe(queue: &DoublePriorityQueue<&Data::Edge, (u8, i32, u64)>) -> (u8,i32,u64) {
+    let mut min_couple = queue.peek_min();
+    
+    println!(" IN BEST QUEUE VALUE Qe, {:#?}", min_couple);
+    match min_couple {
+        Some(min_couple) =>{
+            println!("something was there!");
+            println!("{:#?}", min_couple.1);
+            return *min_couple.1;
+        }
+        None => {
+            println!("Nothing found in Queue, so returning maximum values");
+            return (1, i32::MAX, u64::MAX);
+        }
+    }
+}
+// i really want to use Some() here
 fn main() -> std::io::Result<()>{
     // File writing
-    let mut file = File::create("samples.txt")?;
-
+    let mut sample_file = File::create("samples.txt")?;
 
     // Reading in the environment
     let Environment = readWorld::readWorld();
@@ -71,12 +107,14 @@ fn main() -> std::io::Result<()>{
     println!("x_samples = {:#?}", x_samples); 
 
     // Qe <- emptyset
-    let mut Qe: PriorityQueue<Data::Edge, (u8, i32, u64)> = PriorityQueue::new();
-    let mut Qv: PriorityQueue<Data::Node, (u8, i32, u64)> = PriorityQueue::new();
+    let mut Qe: DoublePriorityQueue<&Data::Edge, (u8, i32, u64)> = DoublePriorityQueue::new();
+
+    // what i think is happening is im using a reference to the nodes in V, and ``borrowing" them
+    let mut Qv: DoublePriorityQueue<&Data::Node, (u8, i32, u64)> = DoublePriorityQueue::new();
 
     let mut loop_counter: u8 = 0; 
     // A1.3
-    while loop_counter < 2 {
+    while loop_counter < 1 {
         println!("JUST SEE THIS ONCE"); 
         loop_counter+=1;
         
@@ -84,6 +122,7 @@ fn main() -> std::io::Result<()>{
         let mut Qe_len = Qe.len();
         let mut Qv_len = Qv.len();
         println!("Qe len = {}, Qv len = {}", Qe_len, Qv_len);
+
         if Qe_len == 0 && Qv_len == 0 {
             // A1.5, PRUNE
             Prune::Prune();
@@ -97,9 +136,25 @@ fn main() -> std::io::Result<()>{
             println!("V {:#?}", &V); 
 
             // A1.8 Qv <- V
-            
-
+            for (k,v) in &V {
+                println!("Line 1.8");
+                let Qv_score = Data::float_to_triplet( V[&k].gT + V[&k].hHat); 
+                Qv.push(&V[&k], Qv_score);
+            }  
+            println!("Qv = {:#?}", Qv);
+            // A1.9 we will do k nearest instead of radius checking
         }// Q_len == 0 and Qv_len == 0 
+
+        println!("BEST GUEUUE VALUE");
+        let z = BestQueueValueQv(&Qv);
+        println!("best queue value qv = {:#?}", z);
+        // A1.10 while bestQueueValue(Qv) <= BestQueueValue(Qe) do ExpandVertex(BestInQueue(Qv))
+        while BestQueueValueQv(&Qv) <= BestQueueValueQe(&Qe){
+            println!("should be expanding vertices here"); 
+            // I don't think I want to pass in the entire queue, just the best vertex from the queue
+            ExpandVertex::ExpandVertex(&mut Qv, &mut x_samples);
+            std::process::exit(1);
+        }
         
     }
 
@@ -109,8 +164,8 @@ fn main() -> std::io::Result<()>{
 
     // File writing stuff
     for (k,v) in &x_samples.samples{
-        write!(file, "{}, {},{}, \n", v.id, v.x, v.y);
+        write!(sample_file, "{}, {},{}, \n", v.id, v.x, v.y);
     }
-    Ok(())
 
+    Ok(())
 } // END MAIN
