@@ -23,10 +23,6 @@ pub fn ExpandVertex( Qv: &mut DoublePriorityQueue<&Data::Node, (u8, i32, u64)>,
                 println!(" wont u b my neighbor {:#?}", neighbor);
             }
 
-
-
-
-
         }
         None => {
             println!("No vertex found in Expand Vertex");
@@ -34,6 +30,7 @@ pub fn ExpandVertex( Qv: &mut DoublePriorityQueue<&Data::Node, (u8, i32, u64)>,
     }
     
     // A2.3 Qe <-+ {(v,x) in v x X_near | ghat(v) + cHat(v,x) + hHat(x) < gT(xGoal)
+    // I need the goal to be a goal Node
 }
 
 fn nearest_neighbors(k_near: i32, x_samples: &mut Data::Samples, best_vertex : &Data::Node)->Vec<Data::State>{
@@ -62,7 +59,8 @@ fn nearest_neighbors(k_near: i32, x_samples: &mut Data::Samples, best_vertex : &
             Some(nn)=> {
                 // what we actually want to do with the nearest neighbors  
                 println!("Doing Something With The nearest Neighbors");
-                // dereference?
+                // dereference? not sure i understand what this is doing but its doing something
+                // its like getting the data and actually putting it in.. thats waht i think
                 nearest_neighbor_list.push(*nn.0);
             }
             None=>{
