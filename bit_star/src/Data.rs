@@ -1,7 +1,10 @@
 use std::collections::HashMap;
 use std::hash::{Hash, Hasher};
+use std::rc::Rc;
 use minimal_lexical::Float;
 
+
+// 
 // Keep nodes of the motion tree, and states separate
 // Like a node in the motion tree should be a state plus some added info like fHat, gHat etc
 // I am not sure if I actually want to derive copy or clone for this one
@@ -55,7 +58,7 @@ pub struct Node {
     pub gT: f64,
     pub gHat: f64,
     pub hHat: f64,
-    pub parent: Option< Box<Node> >,
+    pub parent: Option< Rc<Node> >,
 }
 
 // Fundamental `Traits` for Node
@@ -74,11 +77,13 @@ impl Hash for Node{
 }
 
 
-#[derive(Debug, Hash)]
+#[derive(Debug)]
 pub struct Edge{
     pub id: u64,
     pub source_node: Node,
     pub target_node: Node,
+    pub c: f64, 
+    pub cHat: f64,
 }
 impl PartialEq for Edge{ 
     fn eq(&self, other: &Edge) -> bool {
@@ -91,7 +96,11 @@ impl PartialEq for Edge{
 impl Eq for Edge{
 
 }
-
+impl Hash for Edge{
+    fn hash<H: Hasher>(&self, item: &mut H) {
+        self.id.hash(item);
+    }
+}
 #[derive(Debug)]
 pub struct Environment {
     pub x_max: i32,

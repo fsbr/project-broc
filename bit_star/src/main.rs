@@ -83,7 +83,7 @@ fn main() -> std::io::Result<()>{
     let x_start = Environment.start;
     let x_goal = Environment.goal;
         
-    let mut V: HashMap<u64, Data::Node> = HashMap::new();
+    let mut V: HashMap<u64, &Data::Node> = HashMap::new();
     let mut start_node = Data::Node{
         id: 0,
         state: x_start,
@@ -93,10 +93,17 @@ fn main() -> std::io::Result<()>{
         parent: None,
     };
     num_nodes+=1;
-
-    // Need a function in here that computes the gHat, fHat, all that stuff (tomorrow)
-    V.insert(start_node.id, start_node);
+    V.insert(start_node.id, &start_node);
     println!("V = {:#?}", V); 
+
+    let mut goal_node = Data::Node{
+        id: num_nodes,
+        state: x_goal,
+        gT: f64::INFINITY,
+        hHat: Collision::euclidean_distance(x_goal.x, x_goal.y, x_goal.x, x_goal.y),
+        gHat: Collision::euclidean_distance(x_goal.x, x_goal.y, x_start.x, x_start.y),
+        parent: None,
+    };
 
     // A1.1 E <- emptyset
     let mut E: HashMap<u64, Data::Edge> = HashMap::new();
@@ -152,7 +159,9 @@ fn main() -> std::io::Result<()>{
         while BestQueueValueQv(&Qv) <= BestQueueValueQe(&Qe){
             println!("should be expanding vertices here"); 
             // I don't think I want to pass in the entire queue, just the best vertex from the queue
-            ExpandVertex::ExpandVertex(&mut Qv, &mut x_samples);
+            ExpandVertex::ExpandVertex(&mut Qv, &mut x_samples, &mut Qe, 
+                                        &start_node, &goal_node, &mut num_nodes, &mut num_edges);
+            println!("num_nodes = {}", num_nodes);
             std::process::exit(1);
         }
         
@@ -168,4 +177,5 @@ fn main() -> std::io::Result<()>{
     }
 
     Ok(())
+
 } // END MAIN
